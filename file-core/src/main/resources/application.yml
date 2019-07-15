@@ -1,0 +1,66 @@
+server:
+  port: ${server_port:8080}
+  #  port: ${server_port:9004}
+  max-http-header-size: 10000000
+
+#雪花客户端
+snowflake:
+  service:
+    #    url: ${snowflake-service-url:http://snowflake.dev.cncommdata.cn}
+    url: ${snowflake_service_url:http://snowflake:8081}
+#元数据客户端
+metadata:
+  service:
+    url: ${metadata_service_url:http://metadata:8080}
+spring:
+  jackson:
+    property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES  #驼峰命名
+    default-property-inclusion: non_null
+
+  # 数据源
+  datasource:
+    #    url: jdbc:mysql://219.153.97.183:3306/log_schema?characterEncoding=utf8&useSSL=true
+    #    username: scmroot
+    url: jdbc:mysql://${mysql_url:192.168.1.166}:${mysql_port:3306}/${mysql_database:leimin_group}?characterEncoding=utf8&useSSL=false
+    username: ${mysql_username:root}
+    password: ${mysql_password:scmroot2019.com}
+    #    password: scmroot2019.com
+    driver-class-name: com.mysql.jdbc.Driver
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    druid:
+      initial-size: 5
+      max-active: 20
+      min-idle: 5
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      filters: wall
+  redis:
+    #host: localhost
+    #    host: localhost
+    host: ${redis_host:192.168.1.166}
+    port: ${redis_port:6379}
+  #    password: ${redis_password:123456}
+
+  # 上传限制
+upload:
+  chunkSize: 10485760 # 10M
+
+# 设置fastdfs
+fdfs:
+  so-timeout: 1501
+  connect-timeout: 1601
+  thumb-image:
+    width: 150
+    height: 150
+  tracker-list: ${tracker_list:192.168.1.166:22122}   # list<string>
+  tracker_servers: ${tracker_servers:192.168.1.166:8888}
+  file_server_url: ${file_server_url:192.168.1.166:8888}
+  #从池中借出的对象的最大数目
+  pool:
+    max-total: 153
+    max-wait-millis: 102  #long类型
+    jmx-name-base: 1 #string 类型
+    jmx-name-prefix: 1 # string类型
